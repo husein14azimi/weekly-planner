@@ -468,66 +468,52 @@
     <header>
         <h1 data-i="app"></h1>
         <div class="tb">
-            <ion-button class="ic" fill="clear" data-a="undo" data-t="undo"><svg slot="icon-only" viewBox="0 0 24 24"
-                    aria-hidden="true">
+            <ion-button class="ic" fill="clear" data-a="undo" data-t="undo"><svg slot="icon-only" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M9 14 4 9l5-5" />
                     <path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11" />
                 </svg></ion-button>
-            <ion-button class="ic" fill="clear" data-a="redo" data-t="redo"><svg slot="icon-only" viewBox="0 0 24 24"
-                    aria-hidden="true">
+            <ion-button class="ic" fill="clear" data-a="redo" data-t="redo"><svg slot="icon-only" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="m15 14 5-5-5-5" />
                     <path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13" />
                 </svg></ion-button>
             <ion-button class="mo" id="rb" fill="outline" aria-pressed="false" data-i="rng"></ion-button>
-            <ion-button class="ic" fill="clear" id="mb" data-t="more" aria-haspopup="true"><svg slot="icon-only"
-                    viewBox="0 0 24 24" aria-hidden="true">
+            <ion-button class="ic" fill="clear" id="mb" data-t="more" aria-haspopup="true"><svg slot="icon-only" viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="5" cy="12" r="1.6" />
                     <circle cx="12" cy="12" r="1.6" />
                     <circle cx="19" cy="12" r="1.6" />
                 </svg></ion-button>
         </div>
-        <ion-popover trigger="mb" dismiss-on-select="true" side="bottom" alignment="end"><ion-content><ion-list
-                    lines="none"><ion-item button detail="false" data-a="exp"><ion-label
-                            data-i="exp"></ion-label></ion-item><ion-item button detail="false" data-a="imp"><ion-label
-                            data-i="imp"></ion-label></ion-item><ion-item button detail="false"
-                        data-a="reset"><ion-label data-i="reset"></ion-label></ion-item><ion-item button detail="false"
-                        data-a="lang"><ion-label id="lg"></ion-label></ion-item><ion-item button detail="false"
-                        data-a="dig"><ion-label id="dg"></ion-label></ion-item></ion-list></ion-content></ion-popover>
+        <ion-popover trigger="mb" dismiss-on-select="true" side="bottom" alignment="end"><ion-content><ion-list lines="none"><ion-item button detail="false" data-a="exp"><ion-label data-i="exp"></ion-label></ion-item><ion-item button detail="false" data-a="imp"><ion-label data-i="imp"></ion-label></ion-item><ion-item button detail="false" data-a="reset"><ion-label data-i="reset"></ion-label></ion-item><ion-item button detail="false" data-a="lang"><ion-label id="lg"></ion-label></ion-item><ion-item button detail="false" data-a="dig"><ion-label id="dg"></ion-label></ion-item></ion-list></ion-content></ion-popover>
     </header>
     <p id="warn" hidden></p>
     <main>
         <div id="W">
             <div id="G" role="grid" tabindex="0"></div>
         </div>
-        <aside id="P">
-            <div id="PB" class="pb" data-s="full" data-tab="c">
-                <ion-segment id="seg" value="c"><ion-segment-button value="c"><ion-label
-                            data-i="tabC"></ion-label></ion-segment-button><ion-segment-button value="t"><ion-label
-                            data-i="tasks"></ion-label></ion-segment-button></ion-segment>
-                <div id="pc">
-                    <p id="cnt"></p>
-                    <label for="ti" data-i="titleL"></label>
-                    <div class="cb"><input id="ti" type="text" dir="auto" role="combobox" aria-controls="sg"
-                            aria-autocomplete="list" aria-expanded="false" autocomplete="off">
-                        <ul id="sg" role="listbox" hidden></ul>
-                    </div>
-                    <label class="sa" hidden><input id="sa" type="checkbox" checked><span data-i="save"></span></label>
-                    <div class="acts"><ion-button fill="outline" data-a="copy" data-i="copy"></ion-button><ion-button
-                            fill="outline" data-a="paste" data-i="paste"></ion-button><ion-button fill="outline"
-                            data-a="clear" data-i="clear"></ion-button></div>
-                    <div class="more"><label for="ca" data-i="capL"></label><input id="ca" type="text" dir="auto"
-                            autocomplete="off">
-                        <div id="col"><span data-i="colorL"></span>
-                            <div id="pal"></div>
-                        </div>
-                        <p id="cnote"></p>
-                    </div>
+        <aside id="P"><div id="PB" class="pb" data-s="full" data-tab="c">
+            <ion-segment id="seg" value="c"><ion-segment-button value="c"><ion-label data-i="tabC"></ion-label></ion-segment-button><ion-segment-button value="t"><ion-label data-i="tasks"></ion-label></ion-segment-button></ion-segment>
+            <div id="pc">
+                <p id="cnt"></p>
+                <label for="ti" data-i="titleL"></label>
+                <div class="cb"><input id="ti" type="text" dir="auto" role="combobox" aria-controls="sg"
+                        aria-autocomplete="list" aria-expanded="false" autocomplete="off">
+                    <ul id="sg" role="listbox" hidden></ul>
                 </div>
-                <div id="pt">
-                    <ul id="TL"></ul><ion-button id="add" data-i="add"></ion-button>
+                <label class="sa" hidden><input id="sa" type="checkbox" checked><span data-i="save"></span></label>
+                <div class="acts"><ion-button fill="outline" data-a="copy" data-i="copy"></ion-button><ion-button fill="outline" data-a="paste"
+                        data-i="paste"></ion-button><ion-button fill="outline" data-a="clear" data-i="clear"></ion-button></div>
+                <div class="more"><label for="ca" data-i="capL"></label><input id="ca" type="text" dir="auto"
+                        autocomplete="off">
+                    <div id="col"><span data-i="colorL"></span>
+                        <div id="pal"></div>
+                    </div>
+                    <p id="cnote"></p>
                 </div>
             </div>
-        </aside>
+            <div id="pt">
+                <ul id="TL"></ul><ion-button id="add" data-i="add"></ion-button>
+            </div>
+        </div></aside>
     </main>
     <ion-modal id="sheet"><ion-content></ion-content></ion-modal>
     <input id="fi" type="file" accept=".json,application/json" hidden>
@@ -768,6 +754,12 @@
         const openSheet = () => { setTab('c'); openAt(.42) };
         seg.addEventListener('ionChange', e => setTab(e.detail.value));
         $('#rb').onclick = e => { rng = !rng; G.classList.toggle('rng', rng); e.currentTarget.setAttribute('aria-pressed', rng) };
+        /* ---------- init ---------- */
+        const d0 = LS.load();
+        if (d0 && d0.v == 1 && ok(d0)) { S = clean(d0); lang = d0.lang == 'fa' ? 'fa' : 'en'; latin = !!d0.latin }
+        else { lang = (navigator.language || '').startsWith('fa') ? 'fa' : 'en'; seed() }
+        applyLang(); save(); render(); setTab('c');
     </script>
 </body>
+
 </html>
