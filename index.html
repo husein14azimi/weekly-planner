@@ -461,6 +461,20 @@
         #PB[data-s=peek] .more {
             display: none
         }
+
+        @media(max-width:760px) {
+            html.no-ion main {
+                flex-direction: column
+            }
+
+            html.no-ion aside {
+                display: block;
+                width: auto;
+                max-height: 45dvh;
+                border-inline-start: 0;
+                border-top: 1px solid var(--line)
+            }
+        }
     </style>
 </head>
 
@@ -739,20 +753,22 @@
         };
         document.querySelectorAll('[data-a]').forEach(b => b.onclick = A[b.dataset.a]);
         /* ---------- mobile: sheet, range mode, menu ---------- */
-        const W = $('#W'), AS = $('#P'), PB = $('#PB'), sheet = $('#sheet'), seg = $('#seg'), SC = sheet.querySelector('ion-content'), MQ = '(max-width:760px)', mob = () => matchMedia(MQ).matches;
-        let bp = 0, open = false;
-        const shTop = () => mob() ? innerHeight * (1 - bp * .82) : 1e9;
-        const setBp = b => { bp = b; PB.dataset.s = !mob() || b >= 1 ? 'full' : 'peek'; W.style.paddingBottom = W.style.scrollPaddingBottom = (mob() ? innerHeight * bp * .82 : 0) + 'px' };
-        Object.assign(sheet, { breakpoints: [0, .42, 1], initialBreakpoint: .42, backdropBreakpoint: 1, backdropDismiss: false, focusTrap: false, handleBehavior: 'cycle' });
+        const W = $('#W'), AS = $('#P'), PB = $('#PB'), sheet = $('#sheet'), seg = $('#seg'), SC = sheet.querySelector('ion-content'), MQ = '(max-width:760px)', mob = () => matchMedia(MQ).matches, sh = () => ion && mob();
+        let bp = 0, open = false, ready = false, ion = true;
+        const shTop = () => sh() ? innerHeight * (1 - bp * .82) : 1e9;
+        const setBp = b => { bp = b; PB.dataset.s = !sh() || b >= 1 ? 'full' : 'peek'; W.style.paddingBottom = W.style.scrollPaddingBottom = (sh() ? innerHeight * bp * .82 : 0) + 'px' };
+        Object.assign(sheet, { breakpoints: [.12, .42, 1], initialBreakpoint: .42, backdropBreakpoint: 1, backdropDismiss: false, focusTrap: false, handleBehavior: 'cycle' });
         sheet.addEventListener('ionBreakpointDidChange', e => setBp(e.detail.breakpoint));
         sheet.addEventListener('ionModalDidPresent', async () => setBp(await sheet.getCurrentBreakpoint()));
         sheet.addEventListener('ionModalDidDismiss', () => { open = false; setBp(0) });
-        async function openAt(b) { if (!mob()) return; if (!open) { open = true; sheet.initialBreakpoint = b; await sheet.present() } else if (b > bp) sheet.setCurrentBreakpoint(b) }
-        function place() { const m = mob(); (m ? SC : AS).append(PB); if (!m && open) sheet.dismiss(); setBp(m ? bp : 1) }
+        async function openAt(b) { if (!sh()) return; if (!open) { open = true; sheet.initialBreakpoint = b; await sheet.present() } else if (b > bp) sheet.setCurrentBreakpoint(b) }
+        function place() { const m = sh(); (m ? SC : AS).append(PB); if (!m && open) sheet.dismiss(); setBp(m ? bp : 1); if (m && ready) openAt(.42) }
         matchMedia(MQ).addEventListener('change', place); place();
-        function setTab(x) { PB.dataset.tab = x; if (seg.value != x) seg.value = x; if (x == 't' && mob()) openAt(1) }
+        Promise.race([customElements.whenDefined('ion-modal'), new Promise((_, no) => setTimeout(no, 6000))]).then(() => { ready = true; openAt(.42) }, () => { ion = false; document.documentElement.classList.add('no-ion'); place() });
+        function setTab(x) { PB.dataset.tab = x; if (seg.value != x) seg.value = x; if (x == 't' && sh()) openAt(1) }
         const openSheet = () => { setTab('c'); openAt(.42) };
         seg.addEventListener('ionChange', e => setTab(e.detail.value));
+        seg.addEventListener('click', e => { const b = e.target.closest('ion-segment-button'); if (!b) return; const v = b.getAttribute('value'); if (ion) openAt(v == 't' ? 1 : .42); else setTab(v) });
         $('#rb').onclick = e => { rng = !rng; G.classList.toggle('rng', rng); e.currentTarget.setAttribute('aria-pressed', rng) };
         /* ---------- init ---------- */
         const d0 = LS.load();

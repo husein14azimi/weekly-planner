@@ -154,7 +154,8 @@ Touch note: on touch in non-range mode, selection is done on `click` (so scrolli
 ## 8. Change: Ionic web components for app chrome (after phone test)
 
 - User tested on phone: hand-coded bottom sheet/tabs/menu did not feel like a normal modern web app. Decision (user said "go with defaults"): use **Ionic Core web components via CDN** (`@ionic/core@8.8.5`, `css/core.css` + `ionic.esm.js`, no build step, still one HTML file).
-- Replaced: bottom sheet -> `ion-modal#sheet` (swipeable, `breakpoints [0, .42, 1]`, `--height: 82dvh`, `backdropBreakpoint 1`, `focusTrap false`, `handleBehavior cycle`); Cell/Tasks tabs -> `ion-segment#seg`; menu -> `ion-popover`; confirm dialog -> `ion-alert` (`ask()`); import error flash -> `ion-toast`; toolbar and action buttons -> `ion-button`.
+- Replaced: bottom sheet -> `ion-modal#sheet` (swipeable, `breakpoints [.12, .42, 1]`, `--height: 82dvh`, `backdropBreakpoint 1`, `focusTrap false`, `handleBehavior cycle`); Cell/Tasks tabs -> `ion-segment#seg`; menu -> `ion-popover`; confirm dialog -> `ion-alert` (`ask()`); import error flash -> `ion-toast`; toolbar and action buttons -> `ion-button`.
 - Panel content lives in `div#PB`. On mobile (<=760px) it is moved into the modal's `ion-content`; on desktop it sits in `aside#P`. `place()` moves it on resize.
 - Kept custom: grid, selection, title combobox, color palette, data/undo/i18n logic. The memory-storage banner `#warn` is unchanged.
 - Not yet run in a browser. First checks: grid stays tappable while the sheet is at peek; swipe to 0 closes and the next cell tap reopens it; RTL; combobox inside the sheet; Tasks tab opens the sheet full.
+- Fix after user report (panel missing at <=760px): sheet now opens at peek on load and its lowest breakpoint is a collapsed bar (handle + tabs) so it cannot be dismissed or lost; tapping a tab expands it. If Ionic fails to load within 6s, `html.no-ion` shows the panel as a normal bottom panel.
