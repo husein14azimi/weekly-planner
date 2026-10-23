@@ -7,6 +7,8 @@
         content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
     <title>Weekly planner</title>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@8.8.5/css/core.css">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@8.8.5/dist/ionic/ionic.esm.js"></script>
     <style>
         :root {
             --ink: #1b2430;
@@ -199,7 +201,7 @@
             border-inline-start: 1px solid var(--line)
         }
 
-        aside label,
+        .pb label,
         #col>span {
             display: block;
             font-size: .85rem;
@@ -207,7 +209,7 @@
             margin: .6rem 0 .2rem
         }
 
-        aside label.sa {
+        .pb label.sa {
             display: flex;
             gap: .4rem;
             align-items: center;
@@ -329,29 +331,14 @@
             white-space: nowrap
         }
 
-        dialog {
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            max-width: 26rem
-        }
 
-        dialog div {
-            display: flex;
-            gap: .5rem;
-            justify-content: end
-        }
 
         header {
             position: relative
         }
 
-        .ic {
-            padding: .3rem .5rem;
-            display: inline-flex;
-            align-items: center
-        }
 
-        .ic svg {
+        ion-button svg {
             width: 1.2rem;
             height: 1.2rem;
             fill: none;
@@ -361,65 +348,27 @@
             stroke-linejoin: round
         }
 
-        .ic circle {
+        ion-button circle {
             fill: currentColor
         }
 
-        #menu {
-            position: absolute;
-            inset-inline-end: 1rem;
-            top: 100%;
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            gap: .25rem;
-            padding: .4rem;
-            background: #fff;
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            box-shadow: 0 6px 18px #0003
+
+        #rb[aria-pressed=true] {
+            --background: var(--acc);
+            --color: #fff;
+            --border-color: var(--acc)
         }
 
-        #rb[aria-pressed=true],
-        .tabs button[aria-selected=true] {
-            background: var(--acc);
-            color: #fff;
-            border-color: var(--acc)
-        }
-
-        .mo,
-        .hb,
-        .cl {
+        .mo {
             display: none
         }
 
-        .ph {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .4rem;
-            align-items: center;
-            margin-bottom: .6rem
-        }
 
-        .tabs {
-            display: flex;
-            gap: .3rem;
-            flex: 1
-        }
 
-        .tabs button {
-            flex: 1
-        }
 
-        .hb {
-            flex: 0 0 100%;
-            min-height: 44px;
-            border: 0;
-            background: linear-gradient(#c4ccd6, #c4ccd6) center/2.2rem .3rem no-repeat
-        }
 
-        #P[data-tab=c] #pt,
-        #P[data-tab=t] #pc {
+        #PB[data-tab=c] #pt,
+        #PB[data-tab=t] #pc {
             display: none
         }
 
@@ -438,11 +387,6 @@
                 display: inline-flex
             }
 
-            .hb,
-            .cl {
-                display: inline-flex
-            }
-
             button {
                 min-height: 44px;
                 min-width: 44px
@@ -458,26 +402,6 @@
             }
 
             aside {
-                position: fixed;
-                inset-inline: 0;
-                bottom: 0;
-                z-index: 10;
-                width: auto;
-                max-height: 72dvh;
-                padding: .2rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
-                border-inline-start: 0;
-                border-radius: 14px 14px 0 0;
-                box-shadow: 0 -4px 18px #0003
-            }
-
-            #P[data-s=hidden] .tabs,
-            #P[data-s=hidden] .cl,
-            #P[data-s=hidden] #pc,
-            #P[data-s=hidden] #pt {
-                display: none
-            }
-
-            #P[data-s=peek] .more {
                 display: none
             }
 
@@ -498,6 +422,45 @@
                 height: 2.75rem
             }
         }
+
+        :root {
+            --ion-font-family: Vazirmatn, system-ui, sans-serif;
+            --ion-color-primary: #24407a;
+            --ion-color-primary-rgb: 36, 64, 122;
+            --ion-color-primary-contrast: #fff;
+            --ion-color-primary-contrast-rgb: 255, 255, 255;
+            --ion-color-primary-shade: #203869;
+            --ion-color-primary-tint: #3a5386
+        }
+
+        ion-button {
+            min-height: 44px
+        }
+
+        ion-segment {
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            margin-bottom: .6rem;
+            background: #fff
+        }
+
+        ion-modal#sheet {
+            --height: 82dvh;
+            --border-radius: 14px 14px 0 0
+        }
+
+        .pb {
+            padding: 0 1rem calc(1rem + env(safe-area-inset-bottom, 0px))
+        }
+
+        aside .pb {
+            padding: 0
+        }
+
+        #PB[data-s=peek] .more {
+            display: none
+        }
     </style>
 </head>
 
@@ -505,65 +468,68 @@
     <header>
         <h1 data-i="app"></h1>
         <div class="tb">
-            <button class="ic" data-a="undo" data-t="undo"><svg viewBox="0 0 24 24" aria-hidden="true">
+            <ion-button class="ic" fill="clear" data-a="undo" data-t="undo"><svg slot="icon-only" viewBox="0 0 24 24"
+                    aria-hidden="true">
                     <path d="M9 14 4 9l5-5" />
                     <path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11" />
-                </svg></button>
-            <button class="ic" data-a="redo" data-t="redo"><svg viewBox="0 0 24 24" aria-hidden="true">
+                </svg></ion-button>
+            <ion-button class="ic" fill="clear" data-a="redo" data-t="redo"><svg slot="icon-only" viewBox="0 0 24 24"
+                    aria-hidden="true">
                     <path d="m15 14 5-5-5-5" />
                     <path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13" />
-                </svg></button>
-            <button class="mo" id="rb" aria-pressed="false" data-i="rng"></button>
-            <button class="ic" id="mb" data-t="more" aria-haspopup="true"><svg viewBox="0 0 24 24" aria-hidden="true">
+                </svg></ion-button>
+            <ion-button class="mo" id="rb" fill="outline" aria-pressed="false" data-i="rng"></ion-button>
+            <ion-button class="ic" fill="clear" id="mb" data-t="more" aria-haspopup="true"><svg slot="icon-only"
+                    viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="5" cy="12" r="1.6" />
                     <circle cx="12" cy="12" r="1.6" />
                     <circle cx="19" cy="12" r="1.6" />
-                </svg></button>
+                </svg></ion-button>
         </div>
-        <div id="menu" hidden><button data-a="exp" data-i="exp"></button><button data-a="imp"
-                data-i="imp"></button><button data-a="reset" data-i="reset"></button><button
-                data-a="lang"></button><button data-a="dig"></button></div>
+        <ion-popover trigger="mb" dismiss-on-select="true" side="bottom" alignment="end"><ion-content><ion-list
+                    lines="none"><ion-item button detail="false" data-a="exp"><ion-label
+                            data-i="exp"></ion-label></ion-item><ion-item button detail="false" data-a="imp"><ion-label
+                            data-i="imp"></ion-label></ion-item><ion-item button detail="false"
+                        data-a="reset"><ion-label data-i="reset"></ion-label></ion-item><ion-item button detail="false"
+                        data-a="lang"><ion-label id="lg"></ion-label></ion-item><ion-item button detail="false"
+                        data-a="dig"><ion-label id="dg"></ion-label></ion-item></ion-list></ion-content></ion-popover>
     </header>
     <p id="warn" hidden></p>
     <main>
         <div id="W">
             <div id="G" role="grid" tabindex="0"></div>
         </div>
-        <aside id="P" data-s="peek" data-tab="c">
-            <div class="ph"><button class="hb" id="hb" data-t="tabC"></button>
-                <div class="tabs" role="tablist"><button role="tab" data-tab="c" data-i="tabC"></button><button
-                        role="tab" data-tab="t" data-i="tasks"></button></div>
-                <button class="cl ic" id="cl" data-t="close">✕</button>
-            </div>
-            <div id="pc">
-                <p id="cnt"></p>
-                <label for="ti" data-i="titleL"></label>
-                <div class="cb"><input id="ti" type="text" dir="auto" role="combobox" aria-controls="sg"
-                        aria-autocomplete="list" aria-expanded="false" autocomplete="off">
-                    <ul id="sg" role="listbox" hidden></ul>
-                </div>
-                <label class="sa" hidden><input id="sa" type="checkbox" checked><span data-i="save"></span></label>
-                <div class="acts"><button data-a="copy" data-i="copy"></button><button data-a="paste"
-                        data-i="paste"></button><button data-a="clear" data-i="clear"></button></div>
-                <div class="more"><label for="ca" data-i="capL"></label><input id="ca" type="text" dir="auto"
-                        autocomplete="off">
-                    <div id="col"><span data-i="colorL"></span>
-                        <div id="pal"></div>
+        <aside id="P">
+            <div id="PB" class="pb" data-s="full" data-tab="c">
+                <ion-segment id="seg" value="c"><ion-segment-button value="c"><ion-label
+                            data-i="tabC"></ion-label></ion-segment-button><ion-segment-button value="t"><ion-label
+                            data-i="tasks"></ion-label></ion-segment-button></ion-segment>
+                <div id="pc">
+                    <p id="cnt"></p>
+                    <label for="ti" data-i="titleL"></label>
+                    <div class="cb"><input id="ti" type="text" dir="auto" role="combobox" aria-controls="sg"
+                            aria-autocomplete="list" aria-expanded="false" autocomplete="off">
+                        <ul id="sg" role="listbox" hidden></ul>
                     </div>
-                    <p id="cnote"></p>
+                    <label class="sa" hidden><input id="sa" type="checkbox" checked><span data-i="save"></span></label>
+                    <div class="acts"><ion-button fill="outline" data-a="copy" data-i="copy"></ion-button><ion-button
+                            fill="outline" data-a="paste" data-i="paste"></ion-button><ion-button fill="outline"
+                            data-a="clear" data-i="clear"></ion-button></div>
+                    <div class="more"><label for="ca" data-i="capL"></label><input id="ca" type="text" dir="auto"
+                            autocomplete="off">
+                        <div id="col"><span data-i="colorL"></span>
+                            <div id="pal"></div>
+                        </div>
+                        <p id="cnote"></p>
+                    </div>
                 </div>
-            </div>
-            <div id="pt">
-                <ul id="TL"></ul><button id="add" data-i="add"></button>
+                <div id="pt">
+                    <ul id="TL"></ul><ion-button id="add" data-i="add"></ion-button>
+                </div>
             </div>
         </aside>
     </main>
-    <dialog id="dlg">
-        <form method="dialog">
-            <p></p>
-            <div><button value="n" data-i="no"></button><button value="y"></button></div>
-        </form>
-    </dialog>
+    <ion-modal id="sheet"><ion-content></ion-content></ion-modal>
     <input id="fi" type="file" accept=".json,application/json" hidden>
     <script>
         'use strict';
@@ -593,7 +559,7 @@
         /* ---------- state ---------- */
         let lang = 'en', latin = false, S = { tasks: [], cells: {} }, sel = { a: [0, START], b: [0, START] }, clip = null, drag = false, un = [], re = [], mem = false, dirty = false, ai = -1, sgl = [], nf, coll, EL = {};
         const iso = s => '\u2068' + s + '\u2069', tr = (k, ...a) => { const v = L[lang][k]; return typeof v == 'function' ? v(...a) : v }, N = x => nf.format(x), rtl = () => lang == 'fa', uid = () => Math.random().toString(36).slice(2, 8), key = (d, h) => d + '-' + h;
-        const G = $('#G'), ti = $('#ti'), ca = $('#ca'), sg = $('#sg'), sa = $('#sa'), dlg = $('#dlg'), TL = $('#TL'), col = $('#col'), fi = $('#fi');
+        const G = $('#G'), ti = $('#ti'), ca = $('#ca'), sg = $('#sg'), sa = $('#sa'), TL = $('#TL'), col = $('#col'), fi = $('#fi');
         /* ---------- storage ---------- */
         const LS = {
             load() { try { return JSON.parse(localStorage.getItem('planner.v1')) } catch { mem = true; return null } },
@@ -703,10 +669,13 @@
         function applyLang() {
             const r = document.documentElement; r.lang = lang; r.dir = rtl() ? 'rtl' : 'ltr'; nf = new Intl.NumberFormat(rtl() && !latin ? 'fa-IR' : 'en'); coll = new Intl.Collator(lang);
             document.querySelectorAll('[data-i]').forEach(e => e.textContent = tr(e.dataset.i)); document.title = tr('app'); document.querySelectorAll('[data-t]').forEach(e => { e.title = tr(e.dataset.t); e.setAttribute('aria-label', e.title) });
-            $('[data-a=lang]').textContent = L[rtl() ? 'en' : 'fa'].lang; const dg = $('[data-a=dig]'); dg.hidden = !rtl(); dg.textContent = latin ? '۱۲۳' : '123'
+            $('#lg').textContent = L[rtl() ? 'en' : 'fa'].lang; $('[data-a=dig]').hidden = !rtl(); $('#dg').textContent = latin ? '۱۲۳' : '123'
         }
         /* ---------- dialog / task deletion ---------- */
-        const ask = (m, y = 'ok') => new Promise(r => { dlg.querySelector('p').textContent = m; dlg.querySelector('[value=y]').textContent = tr(y); dlg.returnValue = ''; dlg.onclose = () => r(dlg.returnValue == 'y'); dlg.showModal() });
+        const ask = async (m, y = 'ok') => {
+            const a = document.createElement('ion-alert'); a.message = m; a.buttons = [{ text: tr('no'), role: 'cancel' }, { text: tr(y), role: 'confirm' }];
+            document.body.append(a); await a.present(); const { role } = await a.onDidDismiss(); a.remove(); return role == 'confirm'
+        };
         async function delTask(k) {
             const us = Object.values(S.cells).filter(c => c.t == k.id), caps = us.filter(c => c.c).length;
             if (us.length && !await ask(tr('delMsg', k.name, us.length, caps), 'yes')) return;
@@ -744,7 +713,7 @@
         pal.onclick = e => { const b = e.target.closest('button'); if (b) setColor(b.dataset.c) }; cc.onchange = () => setColor(cc.value);
         /* ---------- grid interaction ---------- */
         let rng = false, pt = 'mouse';
-        const SEL = '[data-d],[data-hd],[data-hh]', flash = m => { const w = $('#warn'); w.textContent = m; w.hidden = false; setTimeout(render, 4000) };
+        const SEL = '[data-d],[data-hd],[data-hh]', flash = m => { const t = document.createElement('ion-toast'); t.message = m; t.duration = 4000; t.position = 'top'; document.body.append(t); t.present(); t.onDidDismiss().then(() => t.remove()) };
         function hit(c, shift) {
             const D = c.dataset; let cell = false;
             if (D.hd != null) sel = { a: [+D.hd, START], b: [+D.hd, END] };
@@ -757,9 +726,9 @@
         G.onpointermove = e => {
             if (!drag) return; const c = document.elementFromPoint(e.clientX, e.clientY)?.closest('[data-d]');
             if (c && (+c.dataset.d != sel.b[0] || +c.dataset.h != sel.b[1])) { sel.b = [+c.dataset.d, +c.dataset.h]; paintSel() }
-            if (rng) { const r = W.getBoundingClientRect(), bt = Math.min(r.bottom, P.getBoundingClientRect().top), dx = e.clientX > r.right - 56 ? 16 : e.clientX < r.left + 56 ? -16 : 0, dy = e.clientY > bt - 48 ? 16 : e.clientY < r.top + 64 ? -16 : 0; if (dx || dy) W.scrollBy(dx, dy) }
+            if (rng) { const r = W.getBoundingClientRect(), bt = Math.min(r.bottom, shTop()), dx = e.clientX > r.right - 56 ? 16 : e.clientX < r.left + 56 ? -16 : 0, dy = e.clientY > bt - 48 ? 16 : e.clientY < r.top + 64 ? -16 : 0; if (dx || dy) W.scrollBy(dx, dy) }
         };
-        G.ondblclick = e => { if (!e.target.closest('[data-d]')) return; setTab('c'); if (P.dataset.s == 'hidden') setS('peek'); ti.focus(); ti.select() };
+        G.ondblclick = e => { if (!e.target.closest('[data-d]')) return; setTab('c'); openAt(.42); ti.focus(); ti.select() };
         addEventListener('pointerup', () => drag = false); addEventListener('pointercancel', () => drag = false);
         G.onkeydown = e => {
             const k = e.key, m = e.ctrlKey || e.metaKey, kl = k.toLowerCase();
@@ -784,22 +753,21 @@
         };
         document.querySelectorAll('[data-a]').forEach(b => b.onclick = A[b.dataset.a]);
         /* ---------- mobile: sheet, range mode, menu ---------- */
-        const P = $('#P'), W = $('#W'), menu = $('#menu'), mob = () => matchMedia('(max-width:760px)').matches;
-        const setS = x => { P.dataset.s = x };
-        function setTab(x) { P.dataset.tab = x; P.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab == x)); if (x == 't' && mob()) setS('full') }
-        const openSheet = () => { setTab('c'); if (P.dataset.s == 'hidden') setS('peek') };
-        P.querySelectorAll('.tabs button').forEach(b => b.onclick = () => setTab(b.dataset.tab));
-        $('#hb').onclick = () => setS(P.dataset.s == 'peek' ? 'full' : 'peek'); $('#cl').onclick = () => setS('hidden');
-        new ResizeObserver(() => { W.style.paddingBottom = W.style.scrollPaddingBottom = (mob() ? P.offsetHeight : 0) + 'px' }).observe(P);
+        const W = $('#W'), AS = $('#P'), PB = $('#PB'), sheet = $('#sheet'), seg = $('#seg'), SC = sheet.querySelector('ion-content'), MQ = '(max-width:760px)', mob = () => matchMedia(MQ).matches;
+        let bp = 0, open = false;
+        const shTop = () => mob() ? innerHeight * (1 - bp * .82) : 1e9;
+        const setBp = b => { bp = b; PB.dataset.s = !mob() || b >= 1 ? 'full' : 'peek'; W.style.paddingBottom = W.style.scrollPaddingBottom = (mob() ? innerHeight * bp * .82 : 0) + 'px' };
+        Object.assign(sheet, { breakpoints: [0, .42, 1], initialBreakpoint: .42, backdropBreakpoint: 1, backdropDismiss: false, focusTrap: false, handleBehavior: 'cycle' });
+        sheet.addEventListener('ionBreakpointDidChange', e => setBp(e.detail.breakpoint));
+        sheet.addEventListener('ionModalDidPresent', async () => setBp(await sheet.getCurrentBreakpoint()));
+        sheet.addEventListener('ionModalDidDismiss', () => { open = false; setBp(0) });
+        async function openAt(b) { if (!mob()) return; if (!open) { open = true; sheet.initialBreakpoint = b; await sheet.present() } else if (b > bp) sheet.setCurrentBreakpoint(b) }
+        function place() { const m = mob(); (m ? SC : AS).append(PB); if (!m && open) sheet.dismiss(); setBp(m ? bp : 1) }
+        matchMedia(MQ).addEventListener('change', place); place();
+        function setTab(x) { PB.dataset.tab = x; if (seg.value != x) seg.value = x; if (x == 't' && mob()) openAt(1) }
+        const openSheet = () => { setTab('c'); openAt(.42) };
+        seg.addEventListener('ionChange', e => setTab(e.detail.value));
         $('#rb').onclick = e => { rng = !rng; G.classList.toggle('rng', rng); e.currentTarget.setAttribute('aria-pressed', rng) };
-        $('#mb').onclick = () => { menu.hidden = !menu.hidden }; menu.onclick = () => setTimeout(() => { menu.hidden = true });
-        addEventListener('pointerdown', e => { if (!e.target.closest('#menu,#mb')) menu.hidden = true });
-        /* ---------- init ---------- */
-        const d0 = LS.load();
-        if (d0 && d0.v == 1 && ok(d0)) { S = clean(d0); lang = d0.lang == 'fa' ? 'fa' : 'en'; latin = !!d0.latin }
-        else { lang = (navigator.language || '').startsWith('fa') ? 'fa' : 'en'; seed() }
-        applyLang(); save(); render(); setTab('c');
     </script>
 </body>
-
 </html>
